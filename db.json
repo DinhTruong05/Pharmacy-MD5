@@ -1,0 +1,61 @@
+{
+  "products": [
+    {
+      "id": "PROD-0001",
+      "name": "Paracetamol 500mg",
+      "type": "Thuốc giảm đau",
+      "price": 12000,
+      "quantity": 50,
+      "manufactureDate": "2023-05-10",
+      "description": "Hỗ trợ giảm đau, hạ sốt"
+    },
+    {
+      "id": "PROD-0002",
+      "name": "Thuốc ngủ",
+      "type": "Vitamin & Khoáng chất",
+      "price": 200000,
+      "quantity": 8,
+      "manufactureDate": "2025-11-01",
+      "description": "Thuốc trị mất ngủ"
+    },
+    {
+      "id": "PROD-0003",
+      "name": "Corporis eveniet vi",
+      "type": "Vitamin & Khoáng chất",
+      "price": 68,
+      "quantity": 14,
+      "manufactureDate": "2020-09-27",
+      "description": "Facilis minus sunt t"
+    },
+    {
+      "id": "PROD-0004",
+      "name": "In itaque sunt quide",
+      "type": "Vitamin & Khoáng chất",
+      "price": 73,
+      "quantity": 8,
+      "manufactureDate": "1989-07-09",
+      "description": "Animi corporis mole"
+    }
+  ],
+  "productTypes": [
+    {
+      "id": "TYPE-001",
+      "name": "Thuốc giảm đau"
+    },
+    {
+      "id": "TYPE-002",
+      "name": "Thuốc kháng sinh"
+    },
+    {
+      "id": "TYPE-003",
+      "name": "Vitamin & Khoáng chất"
+    }
+  ],
+  "productNames": [
+    "Paracetamol 500mg",
+    "Amoxicillin 250mg",
+    "Vitamin C 1000mg",
+    "Ibuprofen 200mg",
+    "Azithromycin 500mg"
+  ]
+}
