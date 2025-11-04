@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchProducts, fetchProductTypes } from "../api";
+import { fetchProducts, fetchProductTypes, deleteProduct } from "../api";
 import dayjs from "dayjs";
 
 const ProductList = () => {
@@ -10,18 +10,20 @@ const ProductList = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  // Lấy danh sách sản phẩm và thể loại
+  const fetchData = async () => {
+    try {
+      const [fProducts, fTypes] = await Promise.all([fetchProducts(), fetchProductTypes()]);
+      setProducts(fProducts);
+      setTypes(fTypes);
+    } catch (err) {
+      setError("❌ Lỗi tải dữ liệu");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [fProducts, fTypes] = await Promise.all([fetchProducts(), fetchProductTypes()]);
-        setProducts(fProducts);
-        setTypes(fTypes);
-      } catch (err) {
-        setError(" Lỗi tải dữ liệu");
-      } finally {
-        setLoading(false);
-      }
-    };
     fetchData();
   }, []);
 
@@ -33,12 +35,22 @@ const ProductList = () => {
     return matchType && matchPrice;
   });
 
+  const handleDelete = async (id) => {
+    if (!window.confirm("⚠️ Bạn có chắc muốn xóa sản phẩm này?")) return;
+    try {
+      await deleteProduct(id);
+      setProducts(products.filter((p) => p.id !== id)); // cập nhật state sau khi xóa
+    } catch (err) {
+      alert("❌ Xóa sản phẩm thất bại");
+    }
+  };
+
   if (loading) return <p>Đang tải dữ liệu...</p>;
   if (error) return <p className="text-danger">{error}</p>;
 
   return (
     <div className="container my-4">
-      <h2 className="mb-4"> Danh sách sản phẩm</h2>
+      <h2 className="mb-4">📦 Danh sách sản phẩm</h2>
 
       {/* Filters */}
       <div className="row g-3 mb-3">
@@ -54,7 +66,6 @@ const ProductList = () => {
             ))}
           </select>
         </div>
-
         <div className="col-md-3">
           <input
             type="number"
@@ -65,7 +76,6 @@ const ProductList = () => {
             onChange={(e) => setPriceRange((prev) => ({ ...prev, min: e.target.value }))}
           />
         </div>
-
         <div className="col-md-3">
           <input
             type="number"
@@ -76,12 +86,12 @@ const ProductList = () => {
             onChange={(e) => setPriceRange((prev) => ({ ...prev, max: e.target.value }))}
           />
         </div>
-
         <div className="col-md-3 d-flex align-items-end">
           <button className="btn btn-secondary w-100" onClick={() => {
-            setFilterType(""); setPriceRange({ min: "", max: "" });
+            setFilterType(""); 
+            setPriceRange({ min: "", max: "" });
           }}>
-             Reset Filter
+            Reset Filter
           </button>
         </div>
       </div>
@@ -98,6 +108,7 @@ const ProductList = () => {
               <th>Số lượng</th>
               <th>Ngày SX</th>
               <th>Mô tả</th>
+              <th>Hành động</th>
             </tr>
           </thead>
           <tbody>
@@ -111,11 +122,19 @@ const ProductList = () => {
                   <td>{p.quantity}</td>
                   <td>{dayjs(p.manufactureDate).format("DD/MM/YYYY")}</td>
                   <td>{p.description}</td>
+                  <td>
+                    <button
+                      className="btn btn-danger btn-sm"
+                      onClick={() => handleDelete(p.id)}
+                    >
+                       Xóa
+                    </button>
+                  </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="7" className="text-center text-muted">Không có sản phẩm phù hợp</td>
+                <td colSpan="8" className="text-center text-muted">Không có sản phẩm phù hợp</td>
               </tr>
             )}
           </tbody>

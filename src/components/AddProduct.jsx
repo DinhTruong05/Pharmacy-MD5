@@ -26,7 +26,7 @@ const AddProduct = () => {
         const fTypes = await fetchProductTypes();
         setTypes(fTypes);
       } catch {
-        setError("❌ Lỗi tải dữ liệu");
+        setError(" Lỗi tải dữ liệu");
       } finally {
         setLoading(false);
       }
@@ -85,7 +85,7 @@ const AddProduct = () => {
     <div className="container my-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2 className="mb-0"> Thêm mới sản phẩm</h2>
-        <button className="btn btn-secondary" onClick={() => navigate(-1)}>
+        <button className="btn btn-secondary" onClick={() => navigate("/products")}>
           🔙 Quay lại
         </button>
       </div>

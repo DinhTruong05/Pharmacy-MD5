@@ -17,24 +17,6 @@
       "quantity": 8,
       "manufactureDate": "2025-11-01",
       "description": "Thuốc trị mất ngủ"
-    },
-    {
-      "id": "PROD-0003",
-      "name": "Corporis eveniet vi",
-      "type": "Vitamin & Khoáng chất",
-      "price": 68,
-      "quantity": 14,
-      "manufactureDate": "2020-09-27",
-      "description": "Facilis minus sunt t"
-    },
-    {
-      "id": "PROD-0004",
-      "name": "In itaque sunt quide",
-      "type": "Vitamin & Khoáng chất",
-      "price": 73,
-      "quantity": 8,
-      "manufactureDate": "1989-07-09",
-      "description": "Animi corporis mole"
     }
   ],
   "productTypes": [
