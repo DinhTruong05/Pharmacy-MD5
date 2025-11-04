@@ -36,12 +36,12 @@ const ProductList = () => {
   });
 
   const handleDelete = async (id) => {
-    if (!window.confirm("⚠️ Bạn có chắc muốn xóa sản phẩm này?")) return;
+    if (!window.confirm(" Bạn có chắc muốn xóa sản phẩm này?")) return;
     try {
       await deleteProduct(id);
-      setProducts(products.filter((p) => p.id !== id)); // cập nhật state sau khi xóa
+      setProducts(products.filter((p) => p.id !== id));
     } catch (err) {
-      alert("❌ Xóa sản phẩm thất bại");
+      alert(" Xóa sản phẩm thất bại");
     }
   };
 

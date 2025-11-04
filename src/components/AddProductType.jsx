@@ -1,25 +1,27 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { addProductType } from "../api";
+import { Formik, Form, Field, ErrorMessage } from "formik";
+import * as Yup from "yup";
+
+const validationSchema = Yup.object({
+  name: Yup.string().trim().required("Tên thể loại không được để trống"),
+});
 
 const AddProductType = () => {
-  const [typeName, setTypeName] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
-  const handleSubmit = async () => {
-    if (!typeName.trim()) {
-      setMessage("❌ Tên thể loại không được để trống");
-      return;
-    }
-
+  const handleSubmit = async (values, { setSubmitting, resetForm }) => {
     try {
-      await addProductType({ name: typeName });
+      await addProductType({ name: values.name });
       setMessage("✅ Thêm thể loại thành công");
-      setTypeName("");
-      setTimeout(() => navigate("/products"), 1000);
-    } catch {
+      resetForm();
+      setTimeout(() => navigate('/products'), 1000);
+    } catch (err) {
       setMessage("❌ Thêm thể loại thất bại");
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -27,32 +29,31 @@ const AddProductType = () => {
     <div className="container my-4">
       <div className="d-flex justify-content-between align-items-center mb-3">
         <h2 className="mb-0">Thêm mới thể loại</h2>
-        <button className="btn btn-secondary" onClick={() => navigate("/products")}>
-          🔙 Quay lại
-        </button>
+        <button className="btn btn-secondary" onClick={() => navigate('/products')}>🔙 Quay lại</button>
       </div>
 
       {message && (
-        <div className={`alert ${message.includes("") ? "alert-success" : "alert-danger"}`} role="alert">
+        <div className={`alert ${message.includes("✅") ? "alert-success" : "alert-danger"}`} role="alert">
           {message}
         </div>
       )}
 
-      <div className="mb-3">
-        <label className="form-label">Tên thể loại</label>
-        <input
-          type="text"
-          className="form-control"
-          placeholder="Nhập tên thể loại"
-          value={typeName}
-          onChange={(e) => setTypeName(e.target.value)}
-        />
-      </div>
+      <Formik initialValues={{ name: "" }} validationSchema={validationSchema} onSubmit={handleSubmit}>
+        {({ isSubmitting }) => (
+          <Form>
+            <div className="mb-3">
+              <label className="form-label">Tên thể loại</label>
+              <Field name="name" className="form-control" placeholder="Nhập tên thể loại" />
+              <div className="text-danger"><ErrorMessage name="name" /></div>
+            </div>
 
-      <div className="d-flex">
-        <button className="btn btn-primary me-2" onClick={handleSubmit}>Thêm mới</button>
-        <button className="btn btn-secondary" onClick={() => setTypeName("")}>Reset</button>
-      </div>
+            <div className="d-flex">
+              <button className="btn btn-primary me-2" type="submit" disabled={isSubmitting}>Thêm mới</button>
+              <button className="btn btn-secondary" type="reset">Reset</button>
+            </div>
+          </Form>
+        )}
+      </Formik>
     </div>
   );
 };

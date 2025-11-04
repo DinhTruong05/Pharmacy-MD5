@@ -1,33 +1,21 @@
-const API_URL = "http://localhost:3001";
+import axios from "axios";
 
-// Products
-export const fetchProducts = () => fetch(`${API_URL}/products`).then(res => res.json());
-export const fetchProductTypes = () => fetch(`${API_URL}/productTypes`).then(res => res.json());
-export const fetchProductNames = () => fetch(`${API_URL}/productNames`).then(res => res.json());
+const client = axios.create({
+  // In Vite use import.meta.env for env vars in the browser
+  baseURL: import.meta.env.VITE_API_URL || "http://localhost:3001",
+  headers: { "Content-Type": "application/json" },
+});
 
-export const addProduct = (product) =>
-  fetch(`${API_URL}/products`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(product)
-  });
+export const fetchProducts = () => client.get("/products").then((r) => r.data);
+export const fetchProductTypes = () => client.get("/productTypes").then((r) => r.data);
+// productNames in db.json are objects {id, name}; map to string names for existing UI
+export const fetchProductNames = () =>
+  client.get("/productNames")
+    .then((r) => r.data)
+    .then((data) => (Array.isArray(data) ? data.map((i) => (typeof i === 'string' ? i : i.name)) : []));
 
-// DELETE product by id
-export const deleteProduct = (id) =>
-  fetch(`${API_URL}/products/${id}`, {
-    method: "DELETE"
-  });
+export const addProduct = (product) => client.post("/products", product).then((r) => r.data);
+export const addProductType = (type) => client.post("/productTypes", type).then((r) => r.data);
 
-// Product Types
-export const addProductType = (type) =>
-  fetch(`${API_URL}/productTypes`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(type)
-  });
-
-// DELETE product type by id
-export const deleteProductType = (id) =>
-  fetch(`${API_URL}/productTypes/${id}`, {
-    method: "DELETE"
-  });
+export const deleteProduct = (id) => client.delete(`/products/${id}`).then((r) => r.data);
+export const deleteProductType = (id) => client.delete(`/productTypes/${id}`).then((r) => r.data);

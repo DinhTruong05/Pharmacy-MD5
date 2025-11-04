@@ -8,7 +8,7 @@ import "./App.css";
 const App = () => {
   return (
     <div className="container my-4">
-      <h1> Quản lý sản phẩm TTT Pharmacy</h1>
+      <h1> Quản lý sản phẩm Pharmacy</h1>
 
       <div className="mb-3">
         <Link className="btn btn-primary me-2" to="/add-product">Thêm sản phẩm</Link>
